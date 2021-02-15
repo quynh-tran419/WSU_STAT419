@@ -1,0 +1,92 @@
+---
+title: "o-well #1"
+author: "Quynh Tran  [quynh_tran]"
+output: html_document
+---
+```{r}
+which.github = "local";
+
+github.local = "/Users/quynhtrann248/WSU_STAT419/";
+github.remote = "https://github.com/quynh-tran419/WSU_STAT419/tree/master/workspace"
+
+if(which.github == "remote")
+  {
+  mypath =paste0(github.remote,"/workspace/o-well/")
+  # include.me = paste0( github.remote, "functions-intro.R");
+  # library(devtools);
+  # source_url(include.me);
+  } else {
+    mypath = paste0(github.local,"/workspace/o-well/")
+      # include.me = paste0( github.local, "functions/functions-intro.R");
+      # source(include.me)
+  }
+
+path = paste0(github.local,"/workspace/o-well/");
+```
+
+# Read in data, tidy data
+
+```{r}
+library(tabulizer)
+library(dplyr)
+# table 1
+table_1 <- extract_tables(file ="/Users/quynhtrann248/Dropbox/-stat419-quynh_tran/o-well/Well-23.pdf",pages = 7)
+owell.metals <- data.frame(table_1)
+owell.metals = owell.metals[-c(26:31),]
+owell.metals = owell.metals[,-c(1)]
+# colnames(owell.metals) <- c("As","B","Ba","Be","Cd","Co","Cr","Cu","Fe","Hg","Mn","Mo","Pb","Se","Zn")
+names(owell.metals) <- owell.metals[1,]
+owell.metals = owell.metals[-c(1,2),]
+rownames(owell.metals) = NULL
+# owell.metals
+
+# table 2
+table_2 <- extract_tables(file ="/Users/quynhtrann248/Dropbox/-stat419-quynh_tran/o-well/Well-23.pdf",pages = 8, output = "data.frame")
+owell.chemistry <- data.frame(table_2[1])
+owell.chemistry = owell.chemistry[-c(19:22,28:31),]
+owell.chemistry = owell.chemistry[-c(1),]
+owell.chemistry = owell.chemistry[,-c(1)]
+rownames(owell.chemistry) = NULL
+# owell.chemistry
+
+# wells location
+wells_location <- read.table("wells-location.txt", sep = "|", header = TRUE)
+wells_location = data.frame(wells_location)
+
+# create fault data frame
+fault <- c(1208.136649,421.8996184,421.8996184,1509.433962,421.8996184,1555.888915,1016.068832,1132.075472,1623.080239,1132.075472,377.3584906,1132.075472,2109.498092,2005.687889,1360.585387,566.0377358,943.3962264)
+geology <- c("Sand","Sand, Alkaline, Granite","Alkaline,Conglomerate","Alkaline","Volcanic rock,Granite","Volcanic rock","Gypsum","Gypsum","Alkaline","Gypsum","Volcanic rock","Alkaline,Granite","Granite","Gypsum","Gypsum","Volcanic rock","Alkaline,Granite,Volcanic rock","Conglomerate,Gypsum","Sand","Sand","Sand","Sand","Sand")
+
+geology = data.frame(geology)
+fault = data.frame(fault)
+geology
+fault
+
+# binding wells_location to table_1 and table_2
+owell.metals <-cbind(owell.metals, wells_location)
+# owell.metals <- cbind(owell.metals,fault)
+owell.metals <- cbind(owell.metals, geology)
+owell.metals
+owell.chemistry <- cbind(owell.chemistry, wells_location)
+# owell.chemistry <- cbind(owell.chemistry, fault)
+owell.chemistry <- cbind(owell.chemistry,geology)
+owell.chemistry
+
+# create and save list as well.rds file
+listData <- list("wells$saudi$chemistry"=owell.chemistry,"wells$saudi$chemistry"=owell.metals)
+saveRDS(listData, file ="wells.rds")
+readRDS(file = "wells.rds")
+
+```
+
+```{r}
+# create fault data frame
+fault <- c(1208.136649,421.8996184,421.8996184,1509.433962,421.8996184,1555.888915,1016.068832,1132.075472,1623.080239,1132.075472,377.3584906,1132.075472,2109.498092,2005.687889,1360.585387,566.0377358,943.3962264)
+geology <- c("Sand","Sand, Alkaline, Granite","Alkaline,Conglomerate","Alkaline","Volcanic rock,Granite","Volcanic rock","Gypsum","Gypsum","Alkaline","Gypsum","Volcanic rock","Alkaline,Granite","Granite","Gypsum","Gypsum","Volcanic rock","Alkaline,Granite,Volcanic rock","Conglomerate,Gypsum","Sand","Sand","Sand","Sand","Sand")
+
+geology = data.frame(geology)
+fault = data.frame(fault)
+geology
+fault
+```
+
