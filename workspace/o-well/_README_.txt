@@ -1,4 +1,4 @@
-###  ASSIGNMENT (1) ###
+he first###  ASSIGNMENT (1) ###
 You will need to read enough of the article to understand what those datasets are. [Wells-23.pdf]
 
 You will need to figure out how to read in these two "datasets" found in this PDF.  "Read in" is a generic term, it does not demand a function, this is a "git r done" tasks, maybe not very glamorous.  Copy/Paste, whatever works.
