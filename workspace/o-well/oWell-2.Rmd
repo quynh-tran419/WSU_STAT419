@@ -1,0 +1,70 @@
+---
+title: "o-well #1"
+author: "Quynh Tran  [quynh_tran]"
+output: html_document
+---
+
+## Reading the saudi.txt file that contains all the data of 23 wells obtained from o-well assignment 1, including fault, geology, metal types, chemical parameters.
+```{r}
+library(readr)
+saudi <- read_delim("https://raw.githubusercontent.com/quynh-tran419/WSU_STAT419/master/workspace/o-well/dataset/saudi.txt", "|", escape_double = FALSE )
+saudi = data.frame(saudi)
+saudi
+metals <- read_delim("https://raw.githubusercontent.com/quynh-tran419/WSU_STAT419/master/workspace/o-well/dataset/metals.txt", "|", escape_double = FALSE )
+
+```
+
+
+## It is mentioned that northern located wells (Th mean is 1549mg/L) tend to have a higher level of hardness compared to southern located wells (TH mean is 1098mg/L). So how does the amount of Calcium cations relate to where the wells located and theirs hardness?
+## The bubble chart shows that the more Calcium cations present in the water, the higher the level of water hardness is.
+
+
+```{r, fig.width=9, fig.height=7.5}
+
+library(ggplot2)
+library(dplyr)
+ggplot(saudi, aes(latitude,TH,size = Ca, color = factor(well))) +
+  geom_point(alpha =0.7) +
+  scale_size(range = c(0.1,20), name = "Ca") +
+  ggtitle("The correlation between the latitude,total hardness,and the amount of dissolved Ca of each well") +
+  xlab("Latitude") + ylab("Total Hardness") 
+
+```
+
+# With the statistics for dissolved metals results of groundwater in 23 wells, how do I indicate the amount of each metal present in each well? 
+# This connected scatter chart shows how much each metal presents and the major metal presents in each well. For example, well #1 contains the most Fe while well #23 contains the least. Similarly, 
+
+``````{r, fig.width=9, fig.height=7.5}
+
+plot( saudi$well, saudi$As , type="b" , bty="l" , xlab="well" , ylab="μg/L" , col=rgb(0.2,0.4,0.1,0.7) , lwd=3 , pch=17 , ylim=c(1,100) )
+lines(saudi$well,saudi$B , col=rgb(0.8,0.4,0.1,0.7) , lwd=3 , pch=19 , type="b" )
+lines(saudi$well,saudi$Ba , col=rgb(0.5,0.4,0.1,0.7) , lwd=3 , pch=15 , type="b" )
+lines(saudi$well,saudi$Be , col=rgb(0.9,0.4,0.2,0.7) , lwd=3 , pch=10 , type="b" )
+lines(saudi$well,saudi$Cd , col=rgb(0.7,0.4,0.4,0.7) , lwd=3 , pch=9 , type="b" )
+lines(saudi$well,saudi$Co , col=rgb(0.6,0.7,0.1,0.7) , lwd=3 , pch=11 , type="b" )
+lines(saudi$well,saudi$Cr , col=rgb(0.5,0.4,0.1,0.7) , lwd=3 , pch=12 , type="b" )
+lines(saudi$well,saudi$cu , col=rgb(0.4,0.9,0.1,0.7) , lwd=3 , pch=13 , type="b" )
+lines(saudi$well,saudi$Fe , col=rgb(0.3,0.4,0.1,0.7) , lwd=3 , pch=14 , type="b" )
+lines(saudi$well,saudi$Hg , col=rgb(0.2,0.4,0.1,0.7) , lwd=3 , pch=7 , type="b" )
+lines(saudi$well,saudi$Mn , col=rgb(0.1,0.4,0.1,0.6) , lwd=3 , pch=8 , type="b" )
+lines(saudi$well,saudi$Mo , col=rgb(1.0,0.4,0.1,0.7) , lwd=3 , pch=6 , type="b" )
+lines(saudi$well,saudi$Pb , col=rgb(0.8,0.6,0.5,0.4) , lwd=3 , pch=5 , type="b" )
+lines(saudi$well,saudi$Se , col=rgb(0.8,0.8,0.8,0.8) , lwd=3 , pch=4 , type="b" )
+lines(saudi$well,saudi$Zn , col=rgb(0.8,0.4,0.9,0.7) , lwd=3 , pch=3 , type="b" )
+legend("topleft",
+legend= c("As","B","Ba","Be","Cd","Co","Cr","Cu","Fe","Hg","Mn","Mo","Pb","Se","Zn"),
+col = c(rgb(0.2,0.4,0.1,0.7), 
+  rgb(0.8,0.4,0.1,0.7), rgb(0.9,0.4,0.2,0.7),col=rgb(0.7,0.4,0.4,0.7),col=rgb(0.6,0.7,0.1,0.7),col=rgb(0.5,0.4,0.1,0.7),col=rgb(0.4,0.9,0.1,0.7),col=rgb(0.3,0.4,0.1,0.7),col=rgb(0.2,0.4,0.1,0.7),col=rgb(0.1,0.4,0.1,0.6),col=rgb(1.0,0.4,0.1,0.7),col=rgb(0.8,0.6,0.5,0.4),col=rgb(0.8,0.8,0.8,0.8),col=rgb(0.8,0.4,0.9,0.7)
+  ), title= "Dissolved metals vs. Well",
+  pch = c(17,19,15,10,9,11,12,13,14,7,8,6,5,4,3), 
+  bty = "n", 
+  pt.cex = 1, 
+  cex = 0.7, 
+  text.col = "black", 
+  horiz = T , 
+  inset = c(0.1, 0.1,0.1,0.1, 0.1,0.1,0.1, 0.1,0.1,0.1, 0.1,0.1,0.1, 0.1))
+
+
+```
+
+
